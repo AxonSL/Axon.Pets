@@ -1,4 +1,5 @@
-﻿using Axon.Server.AssetBundle;
+﻿using System;
+using Axon.Server.AssetBundle;
 using Exiled.API.Features;
 using UnityEngine;
 
@@ -7,24 +8,40 @@ namespace Axon.Pets;
 public class PetController : MonoBehaviour
 {
     public Player Owner { get; private set; }
-    public PetConfig PetConfig { get; private set; }
+    public PetConfiguration PetConfiguration { get; private set; }
 
     private bool _canUpdate = false;
-    public static void Spawn(Player owner , PetConfig config)
+    public static void Spawn(Player owner , PetConfiguration configuration)
     {
-        var asset = AssetBundleSpawner.SpawnAsset(config.AssetBundleName, config.AssetName, config.Name, Vector3.zero, Quaternion.identity, config.Scale);
+        var asset = AssetBundleSpawner.SpawnAsset(configuration.AssetBundleName, configuration.AssetName, configuration.Name, Vector3.zero, Quaternion.identity, configuration.Scale);
         var component = asset.gameObject.AddComponent<PetController>();
         component.Owner = owner;
-        component.PetConfig = config;
+        component.PetConfiguration = configuration;
         component._canUpdate = true;
     }
     public void Despawn()
     {
         
     }
+    public Animation Animation;
+    private void Start()
+    {
+        Animation = gameObject.GetComponent<Animation>();
+    }
+    private bool isWalking = false;
     public void Update()
     {
         if(!_canUpdate) return;
+
+        if (isWalking && PetConfiguration.WalkingAnimationName != "None")
+        {
+            Animation.Play(PetConfiguration.WalkingAnimationName);
+        }
+        else if(PetConfiguration.IdleAnimationName != "None")
+        {
+            Animation.Play(PetConfiguration.IdleAnimationName);
+        }
+        
         if (Owner == null)
         {
             Destroy(gameObject);
@@ -39,7 +56,12 @@ public class PetController : MonoBehaviour
         }
         if (distance > 1f)
         {
-            gameObject.transform.position += (gameObject.transform.forward * (distance * 0.3f * Time.deltaTime)) + PetConfig.PositionOffset;
+            isWalking = true;
+            gameObject.transform.position += (gameObject.transform.forward * (distance * 0.3f * Time.deltaTime)) + PetConfiguration.PositionOffset;
+        }
+        else
+        {
+            isWalking = false;
         }
         
 

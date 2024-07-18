@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Axon.Pets;
 
 [Serializable]
-public class PetConfig
+public class PetConfiguration
 {
     public string AssetName { get; set; }
     public string AssetBundleName { get; set; }

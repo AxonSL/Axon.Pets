@@ -9,7 +9,7 @@ namespace Axon.Pets.Configs;
 
 public class ConfigLoader
 {
-    public static List<PetConfig> Configs = new List<PetConfig>();
+    public static List<PetConfiguration> Configs = new List<PetConfiguration>();
     private static string _configFolder = Path.Combine(Paths.Configs, "Pets");
     public static void Load()
     {
@@ -23,7 +23,7 @@ public class ConfigLoader
             var text = File.ReadAllText(file);
             try
             {
-                var config = Loader.Deserializer.Deserialize<PetConfig>(text);
+                var config = Loader.Deserializer.Deserialize<PetConfiguration>(text);
                 Configs.Add(config);
             }
             catch (Exception e)
@@ -35,7 +35,7 @@ public class ConfigLoader
     }
     private static void CreateDefault()
     {
-        var exampleConfig = new PetConfig(){
+        var exampleConfig = new PetConfiguration(){
             Name = "V1",
             AssetName = "Assets/v1.prefab",
             AssetBundleName = "v1",

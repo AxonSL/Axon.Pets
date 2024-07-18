@@ -391,7 +391,7 @@
         <Compile Include="Configs\Config.cs" />
         <Compile Include="Configs\ConfigLoader.cs" />
         <Compile Include="PetCommand.cs" />
-        <Compile Include="PetConfig.cs" />
+        <Compile Include="PetConfiguration.cs" />
         <Compile Include="PetController.cs" />
         <Compile Include="Plugin.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
